@@ -10,54 +10,41 @@ import java.util.Random;
 @Repository
 public class HaikuRepository {
 
-    @Autowired
-    private Random random;
+    private final Random random;
 
-    private final List<String> oneSyllable = new ArrayList<>(List.of("life", "love", "world", "me", "day", "one", "heart", "home", "man", "end", "king", "sky", "death", "time", "tree", "soul", "pain", "rain", "flame"));
-    private final List<String> twoSyllable = new ArrayList<>(List.of("perfect", "princess", "water", "people", "future", "happy", "freedom", "thousand", "nature", "city", "father", "monster", "river", "\n" +
-            "nothing", "broken", "children", "mountain", "journey", "secret", "mother", "fire"));
-    private final List<String> threeSyllable = new ArrayList<>(List.of("family", "happiness", "animal", "adventure", "dangerous", "harmony", "melody", "perfection", "tomorrow", "medicine", "\n" +
-            "funeral", "innocent", "different", "paradise", "accident", "fantasy", "character", "afterlife", "confusion", "abstinence"));
+    public HaikuRepository(Random random) {
+        this.random = random;
+    }
+
+    private final List<List<String>> dictionary = new ArrayList<>(List.of(
+
+            new ArrayList<>(List.of("life", "love", "world", "me", "day", "one", "heart", "home", "man", "end", "king",
+                    "sky", "death", "time", "tree", "soul", "pain", "rain", "flame")),
+
+            new ArrayList<>(List.of("perfect", "princess", "water", "people", "future", "happy", "freedom", "thousand",
+                    "nature", "city", "father", "monster", "river", "nothing", "broken", "children", "mountain",
+                    "journey", "secret", "mother", "fire")),
+
+            new ArrayList<>(List.of("family", "happiness", "animal", "adventure", "dangerous", "harmony", "melody",
+                    "perfection", "tomorrow", "medicine", "funeral", "innocent", "different", "paradise", "accident",
+                    "fantasy", "character", "afterlife", "confusion", "abstinence"))
+    ));
 
     public String getWord(int syllable) {
-        switch (syllable) {
-            case 1:
-                return oneSyllable.get(random.nextInt(oneSyllable.size()));
-            case 2:
-                return twoSyllable.get(random.nextInt(twoSyllable.size()));
-            case 3:
-                return threeSyllable.get(random.nextInt(threeSyllable.size()));
-            default:
-                return "";
-        }
+        List<String> subDictionary = dictionary.get(syllable - 1);
+        return subDictionary.get(random.nextInt(subDictionary.size()));
     }
 
     public boolean addWord(int syllable, String word) {
-        List<String> wordList;
-        switch (syllable) {
-            case 1:
-                wordList = oneSyllable;
-                break;
-            case 2:
-                wordList = twoSyllable;
-                break;
-            case 3:
-                wordList = threeSyllable;
-                break;
-            default:
-                throw new RuntimeException("Invalid syllable count!");
-        }
-        if (!wordList.contains(word)) {
-            wordList.add(word);
-            return true;
+        List<String> subDictionary = dictionary.get(syllable - 1);
+        if (!subDictionary.contains(word)) {
+            return subDictionary.add(word);
         } else {
             return false;
         }
     }
 
     public boolean deleteWord(String word) {
-        return oneSyllable.remove(word) ||
-                twoSyllable.remove(word) ||
-                threeSyllable.remove(word);
+        return dictionary.get(0).remove(word) || dictionary.get(1).remove(word) || dictionary.get(2).remove(word);
     }
 }
