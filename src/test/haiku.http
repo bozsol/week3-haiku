@@ -1,3 +1,38 @@
-
-###
+### Generate a random haiku
 GET http://localhost:8080/
+
+### Add a new word to haiku dictionary
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+  "syllableCount": 2,
+  "word": "doctor"
+}
+
+### Add an already existed word to haiku dictionary
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+  "syllableCount": 3,
+  "word": "paradise"
+}
+
+### Add a too long word to haiku dictionary
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+  "syllableCount": 4,
+  "word": "paradise-like"
+}
+
+### Remove a word from haiku dictionary
+DELETE http://localhost:8080/
+Content-Type: application/json
+
+{
+  "word": "love"
+}
+

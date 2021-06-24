@@ -17,15 +17,16 @@ public class HaikuService {
     private HaikuRepository repository;
 
     public String getHaiku() {
-        StringBuilder haiku = new StringBuilder();
-        haiku.append(getLine(5)).append("\n")
-                .append(getLine(7)).append("\n")
-                .append(getLine(5));
-
-        return haiku.toString();
+        return getLine(5) + "\n" +
+                getLine(7) + "\n" +
+                getLine(5);
     }
 
-    public String getLine(int remainingSyllable) {
+    public boolean addWord(AddWordCommand addWordCommand) {
+        return repository.addWord(addWordCommand.getSyllableCount(), addWordCommand.getWord().toLowerCase());
+    }
+
+    private String getLine(int remainingSyllable) {
         List<String> line = new ArrayList<>();
         while (remainingSyllable > 0) {
             int bound = Math.min(remainingSyllable, 3);
@@ -37,5 +38,9 @@ public class HaikuService {
             remainingSyllable -= syllable;
         }
         return String.join(" ", line);
+    }
+
+    public boolean deleteWord(String word) {
+        return repository.deleteWord(word);
     }
 }

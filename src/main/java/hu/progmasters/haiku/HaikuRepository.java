@@ -13,11 +13,11 @@ public class HaikuRepository {
     @Autowired
     private Random random;
 
-    private  final List<String> oneSyllable = new ArrayList<>(List.of("life","love","world","me","day","one","heart","home","man","end","king","sky","death","time","tree","soul","pain","rain","flame"));
-    private final List<String> twoSyllable = new ArrayList<>(List.of("perfect","princess","water","people","future","happy","freedom","thousand","nature","city","father","monster","river","\n" +
-            "nothing","broken","children","mountain","journey","secret","mother","fire"));
-    private  final List<String> threeSyllable = new ArrayList<>(List.of("family","happiness","animal","adventure","dangerous","harmony","melody","perfection","tomorrow","medicine","\n" +
-            "funeral","innocent","different","paradise","accident","fantasy","character","afterlife","confusion","abstinence"));
+    private final List<String> oneSyllable = new ArrayList<>(List.of("life", "love", "world", "me", "day", "one", "heart", "home", "man", "end", "king", "sky", "death", "time", "tree", "soul", "pain", "rain", "flame"));
+    private final List<String> twoSyllable = new ArrayList<>(List.of("perfect", "princess", "water", "people", "future", "happy", "freedom", "thousand", "nature", "city", "father", "monster", "river", "\n" +
+            "nothing", "broken", "children", "mountain", "journey", "secret", "mother", "fire"));
+    private final List<String> threeSyllable = new ArrayList<>(List.of("family", "happiness", "animal", "adventure", "dangerous", "harmony", "melody", "perfection", "tomorrow", "medicine", "\n" +
+            "funeral", "innocent", "different", "paradise", "accident", "fantasy", "character", "afterlife", "confusion", "abstinence"));
 
     public String getWord(int syllable) {
         switch (syllable) {
@@ -30,5 +30,34 @@ public class HaikuRepository {
             default:
                 return "";
         }
+    }
+
+    public boolean addWord(int syllable, String word) {
+        List<String> wordList;
+        switch (syllable) {
+            case 1:
+                wordList = oneSyllable;
+                break;
+            case 2:
+                wordList = twoSyllable;
+                break;
+            case 3:
+                wordList = threeSyllable;
+                break;
+            default:
+                throw new RuntimeException("Invalid syllable count!");
+        }
+        if (!wordList.contains(word)) {
+            wordList.add(word);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteWord(String word) {
+        return oneSyllable.remove(word) ||
+                twoSyllable.remove(word) ||
+                threeSyllable.remove(word);
     }
 }
